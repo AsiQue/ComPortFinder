@@ -29,25 +29,41 @@ namespace ComFinder
 
         public ComFinder()
         {
+            string puttyTimer;
+            string path;
+            string puttyParams;
+            AppConfiguration.loadDefualtConfiguration(out path, out puttyParams, out puttyTimer);
+
+            Timer timer = new Timer();
+            if (puttyTimer == "")
+            {
+                MessageBox.Show("no Timer set");
+                timer.Interval = (1000); // default timer 1 sec
+            }
+            else
+            {
+                MessageBox.Show("Timer Interval is"+ puttyTimer);
+                timer.Interval = (Int32.Parse(puttyTimer)); // refresh as timer in settings
+            }
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Start();
             this.components = new System.ComponentModel.Container();
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.exitMenuItem = new System.Windows.Forms.MenuItem();
             this.settingsMenuItem = new System.Windows.Forms.MenuItem();
 
             // Initialize contextMenu1
-            
             // add com ports
-            foreach (string s in SerialPort.GetPortNames())
+          /*  foreach (string s in SerialPort.GetPortNames())
             {
                 MenuItem m = new MenuItem();
                 m.Text = s;
                 m.Click += new System.EventHandler(this.ComPort_DoubleClick);
-                m.Tag = s; /* save the com port as the tag */
+                m.Tag = s; /* save the com port as the tag 
                 this.contextMenu1.MenuItems.Add(m);
             }
-
+        */
             this.contextMenu1.MenuItems.Add("-");
-
             // Initialize menuItem1
             this.settingsMenuItem.Text = "&Settings";
             this.settingsMenuItem.Click += new System.EventHandler(this.contextSettings_Click);
@@ -80,15 +96,16 @@ namespace ComFinder
         {
             string path;
             string puttyParams;
-            AppConfiguration.loadDefualtConfiguration(out path, out puttyParams);
+            string puttyTimer;
+            AppConfiguration.loadDefualtConfiguration(out path, out puttyParams,out puttyTimer);
             string com = (string)((MenuItem)Sender).Tag;
-            if(path != "")
+            if (path != "")
             {
                 if(puttyParams!="")
                 {
                     puttyParams = " -sercfg " + puttyParams;
                 }
-                System.Diagnostics.Process.Start(path, "-serial " + com + puttyParams);
+                System.Diagnostics.Process.Start(path, "-serial " +com + puttyParams);
             }
             
         }
@@ -122,6 +139,18 @@ namespace ComFinder
             {
                 frmSettings.ShowDialog();
 
+            }
+        }
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            
+            foreach (string s in SerialPort.GetPortNames())
+            {
+                MenuItem m = new MenuItem();
+                m.Text = s;
+                m.Click += new System.EventHandler(this.ComPort_DoubleClick);
+                m.Tag = s; /* save the com port as the tag */
+                this.contextMenu1.MenuItems.Add(m);
             }
         }
     }

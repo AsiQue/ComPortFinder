@@ -41,19 +41,29 @@ namespace ComFinder
         private void SettingsForm_Load(object sender, EventArgs e)
         {
             /* load current settings */
-            string path, puttyConf;
-            AppConfiguration.loadDefualtConfiguration(out path, out puttyConf);
+            string path, puttyConf,timer;
+            AppConfiguration.loadDefualtConfiguration(out path, out puttyConf, out timer);
             txtPuttyPath.Text = path;
             txtPuttyParams.Text = puttyConf;
+            txtTimer.Text = timer;
 
 
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            AppConfiguration.saveConfiguration(txtPuttyPath.Text, txtPuttyParams.Text);
+            AppConfiguration.saveConfiguration(txtPuttyPath.Text, txtPuttyParams.Text,txtTimer.Text);
             MessageBox.Show("Configuration Saved");
             this.Close();
+        }
+
+    //    private void textBox1_TextChanged(object sender, EventArgs e)
+      //  {
+      //  }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

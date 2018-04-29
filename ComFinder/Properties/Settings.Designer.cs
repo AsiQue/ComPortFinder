@@ -46,5 +46,17 @@ namespace ComFinder.Properties {
                 this["puttyConf"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string puttyTimer {
+            get {
+                return ((string)(this["puttyTimer"]));
+            }
+            set {
+                this["puttyTimer"] = value;
+            }
+        }
     }
 }

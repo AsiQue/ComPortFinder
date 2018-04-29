@@ -8,5 +8,8 @@
     <Setting Name="puttyConf" Type="System.String" Scope="User">
       <Value Profile="(Default)">115200,8,n,1,n</Value>
     </Setting>
+    <Setting Name="puttyTimer" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
