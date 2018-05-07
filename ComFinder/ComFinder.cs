@@ -18,7 +18,8 @@ namespace ComFinder
         private System.Windows.Forms.MenuItem settingsMenuItem;
         private System.ComponentModel.IContainer components;
         private SettingsForm frmSettings;
-
+        private Timer timer;
+        private static int MENU_CONST_LINES = 3;
 
         [STAThread]
         static void Main()
@@ -34,16 +35,16 @@ namespace ComFinder
             string puttyParams;
             AppConfiguration.loadDefualtConfiguration(out path, out puttyParams, out puttyTimer);
 
-            Timer timer = new Timer();
+            timer = new Timer();
             if (puttyTimer == "")
             {
-                MessageBox.Show("no Timer set");
-                timer.Interval = (3000); // default timer 1 sec
+                //MessageBox.Show("no Timer set");
+                timer.Interval = (3000); // default timer 3 sec
             }
             else
             {
-                MessageBox.Show("Timer Interval is" + puttyTimer);
-                timer.Interval = (Int32.Parse(puttyTimer)); // refresh as timer in settings
+                //MessageBox.Show("Timer Interval is" + puttyTimer);
+                timer.Interval = (Int32.Parse(puttyTimer) *1000); // set timer in seconds
             }
             timer.Tick += new EventHandler(timer_Tick);
             timer.Start();
@@ -51,18 +52,6 @@ namespace ComFinder
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.exitMenuItem = new System.Windows.Forms.MenuItem();
             this.settingsMenuItem = new System.Windows.Forms.MenuItem();
-
-            // Initialize contextMenu1
-            // add com ports
-            /*  foreach (string s in SerialPort.GetPortNames())
-              {
-                  MenuItem m = new MenuItem();
-                  m.Text = s;
-                  m.Click += new System.EventHandler(this.ComPort_DoubleClick);
-                  m.Tag = s; /* save the com port as the tag 
-                  this.contextMenu1.MenuItems.Add(m);
-              }
-          */
 
             // Initialize menuItem1
             this.settingsMenuItem.Text = "&Settings";
@@ -127,6 +116,7 @@ namespace ComFinder
         {
             notifyIcon1.Visible = false;
             notifyIcon1.Dispose();
+            timer.Stop();
             Application.Exit();
         }
 
@@ -146,30 +136,27 @@ namespace ComFinder
         {
             if (SerialPort.GetPortNames().Length != 0)
             {
-                while (this.contextMenu1.MenuItems.Count > 3)
+                while (this.contextMenu1.MenuItems.Count > MENU_CONST_LINES)
                 {
-                    this.contextMenu1.MenuItems.RemoveAt(3);
+                    this.contextMenu1.MenuItems.RemoveAt(MENU_CONST_LINES);
                 }
                 foreach (string s in SerialPort.GetPortNames())
                 {
 
-                    //this.contextMenu1.MenuItems.RemoveAt(0);
                     MenuItem m = new MenuItem();
                     m.Text = s;
                     m.Click += new System.EventHandler(this.ComPort_DoubleClick);
                     m.Tag = s; /* save the com port as the tag */
                     this.contextMenu1.MenuItems.Add(m);
-                    //m.Index = 0;
+                    
                 }
             }
             else
             {
-                while (this.contextMenu1.MenuItems.Count > 3)
+                while (this.contextMenu1.MenuItems.Count > MENU_CONST_LINES)
                 {
-                    this.contextMenu1.MenuItems.RemoveAt(3);
+                    this.contextMenu1.MenuItems.RemoveAt(MENU_CONST_LINES);
                 }
-                //contextMenu1.Dispose();
-                //MessageBox.Show("no ports connected");
             }
         } 
     }

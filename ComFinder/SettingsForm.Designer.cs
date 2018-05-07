@@ -120,7 +120,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(268, 17);
             this.label4.TabIndex = 5;
-            this.label4.Text = "Timer option,please put numbers in secs:";
+            this.label4.Text = "Timer option please put numbers in seconds:";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label3
